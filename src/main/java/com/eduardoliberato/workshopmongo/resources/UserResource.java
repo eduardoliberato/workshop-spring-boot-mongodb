@@ -1,8 +1,7 @@
 package com.eduardoliberato.workshopmongo.resources;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eduardoliberato.workshopmongo.domain.User;
+import com.eduardoliberato.workshopmongo.dto.UserDTO;
 import com.eduardoliberato.workshopmongo.services.UserService;
 
 @RestController //to say that this is a rest resource
@@ -21,10 +21,12 @@ public class UserResource {
 	private UserService service;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<User>> findAll(){	
+	public ResponseEntity<List<UserDTO>> findAll(){	
 		
 		List<User> list = service.findAll(); //that way you search the user in the data base and save in this list
-		return ResponseEntity.ok().body(list); //answer HTTP 
+		//is necessary to convert the list of users for a list of userDTO , them convert this again for a list, as below:
+		List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto); //answer HTTP 
 		
 	}
 
