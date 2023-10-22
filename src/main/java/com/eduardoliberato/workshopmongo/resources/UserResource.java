@@ -53,5 +53,14 @@ public class UserResource {
 		return ResponseEntity.created(uri).build(); //return the address of the new source created 
 		
 	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable /*to say this id is the same received in the URL*/ String id){	
+		
+		service.delete(id);
+		
+		return ResponseEntity.noContent().build();
+		
+	}
 
 }
