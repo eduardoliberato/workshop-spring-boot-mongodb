@@ -11,31 +11,44 @@ import com.eduardoliberato.workshopmongo.dto.UserDTO;
 import com.eduardoliberato.workshopmongo.repository.UserRepository;
 import com.eduardoliberato.workshopmongo.services.exception.ObjectNotFoundException;
 
-@Service //to say for the spring that this is a service that can be injected to others classes 
+@Service // to say for the spring that this is a service that can be injected to others
+			// classes
 public class UserService {
-	
-	@Autowired //to automatic instantiate in the service, creating the dependency injection 
+
+	@Autowired // to automatic instantiate in the service, creating the dependency injection
 	private UserRepository repo;
-	
-	public List<User> findAll(){
-		//responsible to return all the user of the data base
+
+	public List<User> findAll() {
+		// responsible to return all the user of the data base
 		return repo.findAll();
 	}
-	
-	public User findById(String id){
+
+	public User findById(String id) {
 		Optional<User> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
 	}
-	
+
 	public User insert(User obj) {
 		return repo.insert(obj);
 	}
-	
+
 	public void delete(String id) {
-		findById(id); //to reuse the exception of this function 
+		findById(id); // to reuse the exception of this function
 		repo.deleteById(id);
 	}
-	
+
+	public User update(User obj) {
+		User newObj = findById(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
+	}
+
+	private void updateData(User newObj, User obj) {
+		newObj.setName(obj.getName());
+		newObj.setEmail(obj.getEmail());
+		
+	}
+
 	public User fromDTO(UserDTO objDto) {
 		return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
 	}
