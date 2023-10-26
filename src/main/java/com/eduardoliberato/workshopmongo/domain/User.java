@@ -19,7 +19,7 @@ public class User implements Serializable {
 	private String name;
 	private String email;
 	
-	@DBRef(lazy = true) //lazy = true means that the post only will be uploaded if they be accessed 
+	@DBRef(lazy = true) // , DBRef = saying this is a reference ; lazy = true means that the post only will be uploaded if they be accessed 
 	private List<Post> posts = new ArrayList<>();
 	
 	public User() {
