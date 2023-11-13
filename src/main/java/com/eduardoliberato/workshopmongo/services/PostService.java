@@ -1,5 +1,6 @@
 package com.eduardoliberato.workshopmongo.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,12 @@ public class PostService {
 	
 		public List<Post> findByTitle(String text){
 			return repo.searchTitle(text); //the custom query - look in the post repository 
+		}
+		
+		public List<Post> fullSearch(String text, Date minDate, Date maxDate){
+			maxDate = new Date(maxDate.getTime() + 24 *60 *60 * 1000); //we put more one day to consider till the end of the day
+			return repo.fullSearch(text, minDate, maxDate);
+			
 		}
 	
 
